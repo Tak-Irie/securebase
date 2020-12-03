@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  securebase-server:
+    build:
+      context: ./packages/server
+    container_name: server
+    volumes:
+      - ./:/src
+    ports:
+      - '8080:8080'
+    depends_on:
+      - 'postgres'
+      - 'dynamodb'
+    environment:
+      - AWS_ACCESS_KEY_ID='DUMMYIDEXAMPLE'
+      - AWS_SECRET_ACCESS_KEY='DUMMYEXAMPLEKEY'
+      - REGION='eu-west-1'
+  dynamodb:
+    image: amazon/dynamodb-local:latest
+    container_name: dynamodb
+    ports:
+      - '8000:8000'
+  postgres:
+    image: postgres:11-alpine
+    container_name: db
+    ports:
+      - 5432:5432
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_DB: dev-securebase
+      POSTGRES_INITDB_ARGS: --encoding=UTF-8 --locale=C
+      TZ: 'Asia/Tokyo'
