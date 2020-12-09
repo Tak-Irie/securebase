@@ -29,9 +29,8 @@
     }
   },
   "lint-staged": {
-    "./packages/{server,web}/src/**/*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
-      "git add"
+    "packages/**/src/**/*.{js,jsx,ts,tsx}": [
+      "eslint --fix"
     ]
   }
 }

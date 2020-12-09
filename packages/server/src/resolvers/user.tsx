@@ -2,9 +2,8 @@
 import { Arg, Field, InputType, Mutation, Query, Resolver } from 'type-graphql';
 import { getCustomRepository } from 'typeorm';
 import { UserRepository } from '../repository/UserRepository';
-import { UserInput } from '../types';
+import { UserInput, Testy } from '../types';
 import { User } from '../entities/User';
-
 // @ObjectType()
 // class FieldError {
 //   @Field()
