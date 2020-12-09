@@ -9,6 +9,7 @@ build/
 temp/
 dist/
 
+.code-workspace
 .env
 .env.*
 !.env.example
