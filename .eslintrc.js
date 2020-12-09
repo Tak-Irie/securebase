@@ -14,6 +14,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'plugin:prettier/recommended',
+    'plugin:type-graphql/recommended',
     'prettier',
     'prettier/@typescript-eslint',
     'prettier/react',
@@ -37,9 +38,12 @@ module.exports = {
     'prettier',
     'react',
     'react-hooks',
+    'type-graphql',
   ],
   root: true,
   rules: {
+    'import/prefer-default-export': 'off',
+    'class-methods-use-this': 0,
     'lines-between-class-members': [
       'error',
       'always',
@@ -47,8 +51,7 @@ module.exports = {
         exceptAfterSingleLine: true,
       },
     ],
-    // should be rewritten as `['error', { allowAsStatement: true }]` in ESLint 7 or later
-    // SEE: https://github.com/typescript-eslint/typescript-eslint/issues/1184
+    'max-classes-per-file': ['error', 10],
     'no-void': 'off',
     'no-use-before-define': 'off',
     'padding-line-between-statements': [
@@ -114,6 +117,7 @@ module.exports = {
     'import/resolver': {
       node: {
         paths: ['src'],
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
       },
     },
   },

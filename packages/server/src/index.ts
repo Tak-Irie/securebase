@@ -1,17 +1,46 @@
 import 'reflect-metadata';
+import 'dotenv';
 import express from 'express';
 import { createConnection } from 'typeorm';
+import { ApolloServer } from 'apollo-server-express';
+import { buildSchema } from 'type-graphql';
+import UserResolver from './resolvers/user';
+import { User } from './entities/User';
 
 const main = async () => {
   const app = express();
-  const port = 3000;
+  const port = 4000;
 
   //
-  await createConnection();
-
-  app.get('/', (_req, res) => {
-    res.send('Hello World!');
+  const conn = await createConnection({
+    type: 'postgres',
+    url:
+      process.env.DB_HOST ||
+      'postgresql://postgres:postgres@localhost:5432/anysecure4',
+    synchronize: true,
+    logging: true,
+    entities: [User],
+    migrations: ['../migrations/**/*/ts'],
+    cli: {
+      migrationsDir: '../migrations',
+    },
   });
+  await conn.synchronize();
+
+  const apolloSever = new ApolloServer({
+    schema: await buildSchema({
+      resolvers: [UserResolver],
+      validate: false,
+      dateScalarMode: 'isoDate',
+      // authChecker:,
+    }),
+    context: ({ res, req }) => ({
+      req,
+      res,
+    }),
+  });
+
+  apolloSever.applyMiddleware({ app, cors: false });
 
   app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
