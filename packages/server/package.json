@@ -26,8 +26,11 @@
     "ioredis": "^4.19.2",
     "pg": "^8.5.1",
     "reflect-metadata": "^0.1.13",
+    "shallow-equal-object": "^1.1.1",
     "type-graphql": "^1.1.1",
+    "typedi": "^0.8.0",
     "typeorm": "^0.2.29",
+    "typeorm-typedi-extensions": "^0.2.3",
     "ulid": "^2.3.0"
   },
   "devDependencies": {

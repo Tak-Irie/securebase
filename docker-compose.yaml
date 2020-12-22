@@ -5,7 +5,7 @@ services:
       context: ./packages/server
     container_name: server
     volumes:
-      - ./packages/server/src:/src
+      - ./packages/server:/src
       # - ./yarn.lock:/src/yarn.lock
     ports:
       - '4000:4000'
@@ -13,8 +13,8 @@ services:
       - postgres
       - dynamodb
     environment:
-      - AWS_ACCESS_KEY_ID='DUMMYIDEXAMPLE'
-      - AWS_SECRET_ACCESS_KEY='DUMMYEXAMPLEKEY'
+      - AWS_ACCESS_KEY_ID=''
+      - AWS_SECRET_ACCESS_KEY=''
       - REGION='eu-west-1'
     env_file:
       - ./.env
@@ -27,8 +27,8 @@ services:
     image: postgres:11-alpine
     ports:
       - 5433:5432
-    # volumes:
-    #   - ./db:/var/lib/postgresql/data
+    volumes:
+      - ./db:/var/lib/postgresql/data
     container_name: db
     restart: always
     environment:

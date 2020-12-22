@@ -8,6 +8,7 @@ RUN yarn
 
 COPY . .
 # COPY .env.production .env
+RUN ls
 
 RUN yarn build
 

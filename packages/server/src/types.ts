@@ -10,12 +10,3 @@ export type UserInput = {
   username: string;
   password: string;
 };
-
-export type TUser = {
-  id: string;
-  username: string;
-  email: string;
-  password: string;
-  createdAt: Date;
-  updatedAt: Date;
-};

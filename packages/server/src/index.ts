@@ -1,11 +1,12 @@
+/* eslint-disable */
 import 'reflect-metadata';
 import 'dotenv';
 import express from 'express';
 import { createConnection } from 'typeorm';
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
-import UserResolver from './resolvers/user';
-import { User } from './entities/User';
+import UserResolver from './graphql/resolvers/user';
+import { User } from './graphql/entities/User';
 
 const main = async () => {
   const app = express();
@@ -19,6 +20,7 @@ const main = async () => {
       'postgresql://postgres:postgres@localhost:5432/anysecure4',
     synchronize: true,
     logging: true,
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     entities: [User],
     migrations: ['../migrations/**/*/ts'],
     cli: {
