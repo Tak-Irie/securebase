@@ -6,7 +6,9 @@ interface ValueObjectProps {
  * コンストラクターでprops:Tを全てパブリックメンバーにする
  */
 export abstract class ValueObject<T extends ValueObjectProps> {
-  constructor(public props: T) {}
+  constructor(public props: T) {
+    this.props = { ...props };
+  }
 
   public equals(arg?: ValueObject<T>): boolean {
     if (!arg) return false;

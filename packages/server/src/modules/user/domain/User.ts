@@ -8,6 +8,7 @@ import { UserName } from './UserName';
 import { UserCreated } from './events/UserCreated';
 
 interface UserProps {
+  id?: UniqueEntityId;
   username: UserName;
   email: UserEmail;
   password: UserPassword;
@@ -18,8 +19,20 @@ interface UserProps {
 }
 
 export class User extends AggregateRoot<UserProps> {
-  private constructor(props: UserProps, id?: UniqueEntityId) {
+  constructor(readonly props: UserProps, id?: UniqueEntityId) {
     super(props, id);
+  }
+
+  get username(): UserName {
+    return this.props.username;
+  }
+
+  get email(): UserEmail {
+    return this.props.email;
+  }
+
+  get password(): UserPassword {
+    return this.props.password;
   }
 
   public static create(props: UserProps): Result<User> {

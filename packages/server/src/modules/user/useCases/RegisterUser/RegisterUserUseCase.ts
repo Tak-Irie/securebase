@@ -7,16 +7,23 @@ import { UserEmail } from '../../domain/UserEmail';
 import { UserName } from '../../domain/UserName';
 import { UserPassword } from '../../domain/UserPassword';
 import { UserRepository } from '../../domain/UserRepository';
-import { RegisterUserDTO } from './RegisterUserDTO';
 import * as RegisterUserErrors from './RegisterUserErrors';
 import { RegisterUserResponse } from './RegisterUserResponse';
 
 type UserTypes = UserName | UserEmail | UserPassword;
+type RegisterUserDTO = {
+  username: string;
+  email: string;
+  password: string;
+};
 
 export class RegisterUserUseCase
   implements UseCase<RegisterUserDTO, Promise<RegisterUserResponse>> {
-  constructor(private userRepository: UserRepository) {}
-  public async identify(
+  constructor(private userRepository: UserRepository) {
+    this.userRepository = userRepository;
+  }
+
+  public async execute(
     request: RegisterUserDTO,
   ): Promise<RegisterUserResponse> {
     const emailOrError: Result<UserEmail> = UserEmail.create(request.email);
@@ -45,7 +52,7 @@ export class RegisterUserUseCase
     const username: UserName = usernameOrError.getValue();
 
     try {
-      const userEmailAlreadyRegistered = await this.userRepository.identify(
+      const userEmailAlreadyRegistered = await this.userRepository.confirmExistence(
         email,
       );
 
@@ -66,7 +73,7 @@ export class RegisterUserUseCase
 
       const user: User = userOrError.getValue();
 
-      await this.userRepository.save(user);
+      await this.userRepository.registerUser(user);
 
       return right(Result.success<void>());
     } catch (err) {

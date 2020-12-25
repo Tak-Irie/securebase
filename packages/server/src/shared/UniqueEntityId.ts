@@ -6,13 +6,18 @@ import { ulid } from 'ulid';
  */
 export class UniqueEntityId {
   constructor(private id?: string) {
-    if (!id) this.id = ulid();
-    this.id = id;
+    if (id === undefined) this.id = ulid();
+    else {
+      this.id = id;
+    }
+  }
+
+  // temporary shit code
+  public getId(): string {
+    if (this.id === undefined) {
+      return 'error';
+    }
+
+    return this.id;
   }
 }
-
-export const fnUniqueEntityId = (): string => {
-  const id = ulid();
-
-  return id;
-};
