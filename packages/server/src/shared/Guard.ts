@@ -10,11 +10,14 @@ export type GuardArgument = {
 
 export type GuardArgumentCollection = GuardArgument[];
 /**
- * @argument \{argument: any, argumentName: string}
- * @returns \{succeeded: boolean, message?: string}
- * @method falsyCheck collectionFalsyCheck
+ * @class propsがtruthyかどうかを確認するクラス
+ * @description 必要ないかも
  */
 export class Guard {
+  /**
+  * @method {succeeded:boolean, message: string}のみを返す
+  * @description propsは返さない
+  */
   public static falsyCheck(props: GuardArgument): GuardResult {
     if (!props) {
       return {
@@ -23,7 +26,7 @@ export class Guard {
       };
     }
 
-    return { succeeded: true, message: 'fine' };
+    return { succeeded: true, message: '正常な値です' };
   }
 
   public static collectionFalsyCheck(

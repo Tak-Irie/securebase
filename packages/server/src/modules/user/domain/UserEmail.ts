@@ -22,7 +22,7 @@ export class UserEmail extends ValueObject<UserEmailProps> {
 
   public static create(email: UserEmailProps): Result<UserEmail> {
     if (!this.isValidEmail(email.email)) {
-      return Result.fail<UserEmail>('Email address not valid');
+      return Result.fail<UserEmail>('メールアドレスに使用できない文字が含まれています');
     }
 
     return Result.success<UserEmail>(

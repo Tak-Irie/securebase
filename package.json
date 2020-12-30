@@ -29,7 +29,9 @@
     "lerna": "^3.22.1",
     "lint-staged": "^10.5.3",
     "prettier": "^2.2.1",
-    "ts-jest": "^26.4.4"
+    "timeout-as-promise": "^1.0.0",
+    "ts-jest": "^26.4.4",
+    "typeorm-factory": "^0.0.14"
   },
   "workspaces": [
     "packages/*"

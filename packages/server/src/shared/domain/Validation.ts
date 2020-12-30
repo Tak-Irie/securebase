@@ -1,14 +1,9 @@
-// type inputProps = {
-//   minLength?: number;
-
-// };
-
 export class Validation {
-  public static greaterThan(minLength: number, inputValue: string): boolean {
-    return minLength > inputValue.length;
+  public static valueGreaterThanLimit(minLength: number, inputValue: string): boolean {
+    return inputValue.length > minLength;
   }
 
-  public static smallerThan(maxLength: number, inputValue: string): boolean {
-    return inputValue.length > maxLength;
+  public static valueLessThanLimit(maxLength: number, inputValue: string): boolean {
+    return maxLength > inputValue.length;
   }
 }

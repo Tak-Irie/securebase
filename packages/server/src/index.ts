@@ -1,5 +1,8 @@
-import { ApolloServer } from 'apollo-server-express';
+import 'reflect-metadata';
+import 'dotenv';
 import express from 'express';
+import cors from 'cors';
+import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
 import { Container } from 'typedi';
 import { createConnection, useContainer } from 'typeorm';
@@ -8,8 +11,6 @@ import { User } from './graphql/entities/User';
 // import { UserResolver } from "./graphql/resolvers"
 import { UserResolver } from './graphql/resolvers/UserResolver';
 
-import 'dotenv';
-import 'reflect-metadata';
 
 const main = async () => {
   const app = express();
@@ -31,21 +32,35 @@ const main = async () => {
       migrationsDir: '../migrations',
     },
   });
+    app.use(
+    cors({
+      origin: "https://studio.apollographql.com",
+      credentials: true,
+    })
+  );
   const apolloSever = new ApolloServer({
     schema: await buildSchema({
       resolvers: [UserResolver],
       validate: false,
       dateScalarMode: 'isoDate',
       container: Container,
+
       // authChecker:,
     }),
     context: ({ res, req }) => ({
       req,
       res,
     }),
+
   });
 
-  apolloSever.applyMiddleware({ app, cors: false });
+  apolloSever.applyMiddleware({ app, cors: true });
+
+//   app.use((req, res, next) => {
+//   res.header("Access-Control-Allow-Origin", "https://studio.apollographql.com"); // update to match the domain you will make the request from
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//   next();
+// });
 
   app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);

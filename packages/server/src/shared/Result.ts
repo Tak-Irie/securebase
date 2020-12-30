@@ -1,40 +1,47 @@
+
 /**
- * @class throw new Error()をしないことで柔軟にエラーハンドリングするためのクラス
- * もちろん正常値のValue取得にも使えるし、型安全なビジネスロジックを書ける。
- * @method verifyResultsは複数の値オブジェクトを検査したい際に使用する。
+ * @class 統一された"型"のリザルトを返すためのクラス
+ * @description throw new Error を使わずにエラーハンドリングできる
  */
 export class Result<T> {
-  public isSuccess: boolean;
-  public isFailure: boolean;
+  public readonly isSuccess: boolean;
+  public readonly isFailure: boolean;
   public readonly error: string;
-  private _value: T;
+  public readonly value: T;
 
   public constructor(isSuccess: boolean, error?: string, value?: T) {
     if (isSuccess && error) {
       throw new Error(
-        'Invalid Operation Error: isSuccess and error is mutual exclusive',
+        '不正なオペレーションが検出されました、あり得ない値の組合わせです',
       );
     }
     if (!isSuccess && !error) {
-      throw new Error('Invalid Operation Error: !isSuccess needs error');
+      throw new Error('不正なオペレーションが検出されました、あり得ない値の組合わせです');
     }
     if (error) this.error = error;
-    if (value) this._value = value;
+    if (value) this.value = value;
     this.isSuccess = isSuccess;
     this.isFailure = !isSuccess;
 
     Object.freeze(this);
   }
 
-  public getValue(): T {
-    if (!this.isSuccess) {
-      throw new Error("can't get error value, use errorValue method");
+  public static verifyResult<U>(result: Result<U>): Result<U> {
+    if(result.isFailure){
+      return Result.fail<U>(result.getErrorValue())
     }
 
-    return this._value;
+    return Result.success<U>(result.getValue())
   }
 
-  public errorValue(): string {
+/**
+* @desc Result{isFailure: true, error:string value: fail<U>}
+*/
+  public static fail<U>(error: string): Result<U> {
+    return new Result<U>(false, error);
+  }
+
+  public getErrorValue(): string {
     return this.error;
   }
 
@@ -42,13 +49,18 @@ export class Result<T> {
     return new Result<U>(true, '', value);
   }
 
-  public static fail<U>(error: string): Result<U> {
-    return new Result<U>(false, error);
+  public getValue(): T {
+    if (!this.isSuccess) {
+      this.getErrorValue()}
+
+    return this.value;
   }
 
-  public static verifyResults<U>(results: Result<U>[]): Result<U> {
-    results.find(({ isFailure }) => isFailure === true);
 
-    return Result.success<U>();
+public static verifyResults<U>(results: Result<U>[]): Result<U> {
+  const arrayResults = Object.values(results)
+  const findErr =  arrayResults.find(({ isFailure }) => isFailure === true);
+
+  return findErr || Result.success<U>();
   }
 }

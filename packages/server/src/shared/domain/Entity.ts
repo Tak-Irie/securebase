@@ -5,9 +5,7 @@ import { Identifier } from './Identifier';
  * @constructor public readonly props:T @constructor UniqueEntityId
  * @method equals
  */
-const isEntity = (v: any): v is Entity<any> => {
-  return v instanceof Entity;
-};
+const isEntity = (v: unknown): v is Entity<unknown> => v instanceof Entity;
 
 /**
  * 抽象Entityクラス

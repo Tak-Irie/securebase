@@ -20,7 +20,7 @@ export class UserResolver {
     const getUserByIdUseCase = new GetUserByIdUseCase(this.OrmUserRepository);
     const result = await getUserByIdUseCase.execute(id);
     if (result.isLeft())
-      return { message: result.value.errorValue(), user: null };
+      return { message: result.value.getErrorValue(), user: null };
 
     return { message: 'success', user: result.value.getValue() };
   }
@@ -31,7 +31,7 @@ export class UserResolver {
     const getUsersUseCase = new GetUsersUseCase(this.OrmUserRepository);
     const result = await getUsersUseCase.execute();
     if (result.isLeft())
-      return { message: result.value.errorValue(), users: null };
+      return { message: result.value.getErrorValue(), users: null };
 
     return { message: 'success', users: result.value.getValue().users };
   }
@@ -44,7 +44,7 @@ export class UserResolver {
     const registerUserUseCase = new RegisterUserUseCase(this.OrmUserRepository);
     const result = await registerUserUseCase.execute(options);
     if (result.isLeft()) {
-      const response = { message: result.value.errorValue(), user: null };
+      const response = { message: result.value.getErrorValue(), user: null };
 
       return response;
     }

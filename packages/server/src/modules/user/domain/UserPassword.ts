@@ -23,13 +23,12 @@ export class UserPassword extends ValueObject<UserPasswordProps> {
     if (!propsResult.succeeded) {
       return Result.fail<UserPassword>(propsResult.message);
     }
-    if (!props.isHashed) {
-      if (!this.isAppropriateLength(props.password)) {
+    if (!props.isHashed && !this.isAppropriateLength(props.password)) {
         return Result.fail<UserPassword>(
-          'パスワードは8文字以上に設定してください。',
+          'パスワードは8文字以上に設定してください',
         );
       }
-    }
+
 
     return Result.success<UserPassword>(
       new UserPassword({
@@ -47,6 +46,12 @@ export class UserPassword extends ValueObject<UserPasswordProps> {
     if (this.isAlreadyHashed()) return this.props.password;
 
     return this.hashPassword(this.props.password);
+  }
+
+  private async hashPassword(password: string): Promise<string> {
+    const hashedPassword = await argon2.hash(password);
+
+    return hashedPassword;
   }
 
   public async comparePassword(plainTextPassword: string): Promise<boolean> {
@@ -79,9 +84,4 @@ export class UserPassword extends ValueObject<UserPasswordProps> {
     return this.props.isHashed;
   }
 
-  private async hashPassword(password: string): Promise<string> {
-    const hashedPassword = await argon2.hash(password);
-
-    return hashedPassword;
-  }
 }

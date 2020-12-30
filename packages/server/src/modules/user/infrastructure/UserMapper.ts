@@ -16,7 +16,7 @@ export class UserMapper {
       password: ormUser.password,
       isHashed: true,
     });
-    const userEmailResult = UserEmail.create(ormUser.email);
+    const userEmailResult = UserEmail.create({email:ormUser.email});
 
     const userResult = new DomainUser({
       id: new UniqueEntityId(ormUser.id),

@@ -5,7 +5,8 @@ import { UniqueEntityId } from './UniqueEntityId';
 import { Entity } from './Entity';
 
 /**
- * 集約ルート
+ * @class 集約ルート
+ * @description 通常のEntity機能に加えて、ドメインイベントを発火する機能を持つ
  * @method addDomainEvent, clearEvents, logDomainEventAdded
  */
 export abstract class AggregateRoot<T> extends Entity<T> {

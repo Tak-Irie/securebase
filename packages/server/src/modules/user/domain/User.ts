@@ -1,8 +1,8 @@
 import { AggregateRoot } from '../../../shared/domain/AggregateRoot';
-import { Result } from '../../../shared/Result';
 import { UniqueEntityId } from '../../../shared/domain/UniqueEntityId';
+import { Result } from '../../../shared/Result';
 // eslint-disable-next-line import/no-cycle
-import { UserCreated } from './events/UserCreated';
+// import { UserCreated } from './events/UserCreated';
 import { UserEmail } from './UserEmail';
 import { UserName } from './UserName';
 import { UserPassword } from './UserPassword';
@@ -36,10 +36,11 @@ export class User extends AggregateRoot<UserProps> {
   }
 
   public static create(props: UserProps): Result<User> {
+
     const user = new User({
       ...props,
     });
-    user.addDomainEvent(new UserCreated(user));
+    // user.addDomainEvent(new UserCreated(user));
 
     return Result.success<User>(user);
   }

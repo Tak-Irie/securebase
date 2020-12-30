@@ -3,10 +3,10 @@ interface ValueObjectProps {
 }
 
 /**
- * コンストラクターでprops:Tを全てパブリックメンバーにする
+ * コンストラクターでprops:Tを全てpublic readonlyにする
  */
 export abstract class ValueObject<T extends ValueObjectProps> {
-  constructor(public props: T) {
+  constructor(public readonly props: T) {
     this.props = { ...props };
   }
 

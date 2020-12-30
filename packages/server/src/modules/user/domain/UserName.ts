@@ -8,8 +8,8 @@ type UserNameProps = {
 };
 
 export class UserName extends ValueObject<UserNameProps> {
-  public static MAX_LENGTH = 15;
   public static MIN_LENGTH = 2;
+  public static MAX_LENGTH = 15;
 
   private constructor(props: UserNameProps) {
     super(props);
@@ -23,22 +23,22 @@ export class UserName extends ValueObject<UserNameProps> {
     if (!usernameResult.succeeded) {
       return Result.fail<UserName>(usernameResult.message);
     }
-
-    const minLengthResult = Validation.smallerThan(
+    const greaterEnough = Validation.valueGreaterThanLimit(
       this.MIN_LENGTH,
       props.username,
     );
-    if (!minLengthResult) {
-      return Result.fail<UserName>('ユーザー名は最大15文字です。');
+    if (!greaterEnough) {
+      return Result.fail<UserName>('ユーザー名は最小2文字です');
     }
 
-    const maxLengthResult = Validation.greaterThan(
+    const lessEnough = Validation.valueLessThanLimit(
       this.MAX_LENGTH,
       props.username,
     );
-    if (!maxLengthResult) {
-      return Result.fail<UserName>('ユーザー名は最小2文字です。');
+    if (!lessEnough) {
+      return Result.fail<UserName>('ユーザー名は最大15文字です');
     }
+
 
     return Result.success<UserName>(new UserName(props));
   }
