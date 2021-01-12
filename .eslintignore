@@ -5,6 +5,7 @@ dist/
 **/node_modules/
 **/*.min.js
 *.config.js
+**/*.config.js
 /.eslintrc.js
 *.d.ts
 /tailwind.config.js

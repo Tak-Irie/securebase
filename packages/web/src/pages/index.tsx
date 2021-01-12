@@ -2,13 +2,19 @@ import Button from 'components/atoms/Button';
 import { Dropdown } from 'components/molecules/Dropdown';
 import { Footer } from 'components/organisms/Footer';
 import { Navbar } from 'components/organisms/Navbar';
-import React, { FC } from 'react';
+import { GetServerSideProps, NextPage } from 'next';
 import Link from 'next/link';
+import Head from 'next/head';
+
+import auth0 from './api/utils/auth0';
 // import Login from '../components/pages/Login';
 
-const Home: FC = () => {
+const Home: NextPage = () => {
   return (
-    <>
+    <div>
+      <Head>
+        <title>くらしのあんぜんきち | トップページ</title>
+      </Head>
       <Navbar />
       <div>
         <Dropdown>
@@ -86,7 +92,7 @@ const Home: FC = () => {
           <div className="container mx-auto">
             <div className="flex flex-wrap items-center">
               <div className="w-10/12 md:w-6/12 lg:w-4/12 px-12 md:px-4 mr-auto ml-auto -mt-32">
-                <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded-lg bg-gray-800">
+                <div className="relative flex flex-col min-w-0 break-words  w-full mb-6 shadow-lg rounded-lg bg-gray-800">
                   <img
                     alt="..."
                     src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=80"
@@ -672,8 +678,23 @@ const Home: FC = () => {
         </section>
       </div>
       <Footer />
-    </>
+    </div>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await auth0.getSession(context.req);
+  if (session?.user) {
+    console.log('you are logged in!sessionnnnnnnnnnnnnnnnn', session);
+  } else {
+    console.log('you are not log in!', session);
+  }
+
+  return {
+    props: {
+      user: session?.user || null,
+    },
+  };
 };
 
 export default Home;

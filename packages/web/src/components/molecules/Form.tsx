@@ -51,10 +51,18 @@ const Form: FC = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Input label="username" type="text" register={register} />
-      <p className="inline-block uppercase text-red-500 text-xs font-bold italic">
-        {errors.username?.message}
-      </p>
+      <div>
+        <Input label="username" type="text" register={register} />
+        <p
+          className={`inline-block uppercase  text-xs font-bold italic ${
+            errors.username ? 'text-red-500' : 'text-gray-500'
+          }`}
+        >
+          {errors.username
+            ? errors.username?.message
+            : '2~20文字の名前を入力してください'}
+        </p>
+      </div>
       <Input label="email" type="email" register={register} />
       <p className="inline-block uppercase text-red-500 text-xs font-bold italic">
         {errors.email?.message}

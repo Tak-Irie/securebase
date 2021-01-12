@@ -25,7 +25,6 @@ export class UserResolver {
     return { message: 'success', user: result.value.getValue() };
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   @Query(() => Users, { nullable: true })
   async users(): Promise<Users | null> {
     const getUsersUseCase = new GetUsersUseCase(this.OrmUserRepository);

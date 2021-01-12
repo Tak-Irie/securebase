@@ -1,10 +1,13 @@
 import React, { FC } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
+// import { signIn, signOut } from 'next-auth/client';
 import { Dropdown } from '../molecules/Dropdown';
 
 export const Navbar: FC = () => {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
+  const router = useRouter();
 
   return (
     <>
@@ -16,7 +19,7 @@ export const Navbar: FC = () => {
                 className="text-gray-800 text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-no-wrap uppercase"
                 href="#pablo"
               >
-                暮らしのあんぜんきち
+                くらしのあんぜんきち
               </a>
             </Link>
             <button
@@ -85,12 +88,43 @@ export const Navbar: FC = () => {
 
               <li className="flex items-center">
                 <button
+                  onClick={() => router.push('./api/login')}
                   className="bg-gray-800 text-white active:bg-gray-700 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
                   type="button"
                 >
-                  <i className="fas fa-arrow-alt-circle-down" /> Download
+                  <i className="fas fa-arrow-alt-circle-down" /> ログイン
                 </button>
               </li>
+
+              <li className="flex items-center">
+                <button
+                  onClick={() => router.push('./api/logout')}
+                  className="bg-gray-800 text-white active:bg-gray-700 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
+                  type="button"
+                >
+                  <i className="fas fa-arrow-alt-circle-down" /> ログアウト
+                </button>
+              </li>
+              {/* <li className="flex items-center">
+                <button
+                  onClick={() => signIn()}
+                  className="bg-gray-800 text-white active:bg-gray-700 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
+                  type="button"
+                >
+                  <i className="fas fa-arrow-alt-circle-down" />{' '}
+                  NextAuthログイン
+                </button>
+              </li>
+              <li className="flex items-center">
+                <button
+                  onClick={() => signOut()}
+                  className="bg-gray-800 text-white active:bg-gray-700 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
+                  type="button"
+                >
+                  <i className="fas fa-arrow-alt-circle-down" />{' '}
+                  NextAuthログアウト
+                </button>
+              </li> */}
             </ul>
           </div>
         </div>
