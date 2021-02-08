@@ -7,6 +7,7 @@ import {
   PrimaryColumn,
 } from 'typeorm';
 
+export type Role = "ADMIN" | "DEVELOPER"
 @ObjectType()
 @Entity()
 export class User {
@@ -21,6 +22,10 @@ export class User {
   @Field()
   @Column({ unique: true })
   email: string;
+
+  @Field()
+  @Column({ nullable: true })
+  role?: string;
 
   @Column()
   password: string;

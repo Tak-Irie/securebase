@@ -19,6 +19,8 @@ module.exports = {
     'prettier',
     'type-graphql',
     'node',
+    'security',
+    'plugin:node/recommended',
   ],
   extends: [
     'airbnb',
@@ -32,6 +34,7 @@ module.exports = {
     'prettier',
     'prettier/@typescript-eslint',
     'prettier/standard',
+    'plugin:security/recommended',
   ],
   rules: {
     'import/no-cycle': 1,
@@ -85,5 +88,14 @@ module.exports = {
         classPropertiesAllowed: false,
       },
     ],
+    'node/exports-style': ['error', 'module.exports'],
+    'node/file-extension-in-import': ['error', 'always'],
+    'node/prefer-global/buffer': ['error', 'always'],
+    'node/prefer-global/console': ['error', 'always'],
+    'node/prefer-global/process': ['error', 'always'],
+    'node/prefer-global/url-search-params': ['error', 'always'],
+    'node/prefer-global/url': ['error', 'always'],
+    'node/prefer-promises/dns': 'error',
+    'node/prefer-promises/fs': 'error',
   },
 };

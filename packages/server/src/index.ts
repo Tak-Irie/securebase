@@ -1,68 +1,80 @@
 import 'reflect-metadata';
 import dotenv from 'dotenv';
 import express from 'express';
-import session from "express-session"
+// import helmet from "helmet"
+// import session from "express-session"
 import cors from 'cors';
+import { join } from 'path';
 
 import { ApolloServer } from 'apollo-server-express';
-import Keycloak from "keycloak-connect"
-import { KeycloakContext, KeycloakTypeDefs, KeycloakSchemaDirectives } from 'keycloak-connect-graphql';
+// import Keycloak from "keycloak-connect"
+import { KeycloakContext, KeycloakTypeDefs, KeycloakSchemaDirectives} from 'keycloak-connect-graphql';
 
 import { createConnection, useContainer } from 'typeorm';
 import { Container } from 'typedi';
 import { buildSchema } from 'type-graphql';
 
-// import entities from "./graphql/entities/index"
 import resolvers from "./graphql/resolvers/index"
-// import { User } from './graphql/entities/User';
-// import { UserResolver } from './graphql/resolvers/UserResolver';
-// import { TestResolver } from './graphql/resolvers/TestResolver';
-// import { TestEntity } from './graphql/entities/Test';
+import createKeyCloak from './keycloak/createKeyCloak';
+// import { authChecker } from './graphql/utils/AuthChecker';
 
 
 const main = async () => {
   dotenv.config()
   const app = express();
   const port = 4000;
+  const graphqlPath = "/graphql"
+
+  // app.use(helmet())
 
   useContainer(Container);
-
   await createConnection({
     type: 'postgres',
     url:
-      // process.env.DB_HOST ||
-      'postgresql://postgres:postgres@localhost:5432/anysecure4',
+    // process.env.DB_HOST ||
+    'postgresql://postgres:postgres@localhost:5432/anysecure4',
     synchronize: true,
     logging: true,
-    entities: ["./graphql/entities/*.ts"],
+    entities: [join(__dirname, './graphql/entities/*.ts')],
     migrations: ['../migrations/**/*/ts'],
     cli: {
       migrationsDir: '../migrations',
     },
   });
+
   app.set('trust proxy', true);
 
-    app.use(
+  app.use(
     cors({
       origin: ["https://studio.apollographql.com","http://localhost:3000"],
       credentials: true,
     })
-  );
+    );
 
-  const memoryStore = new session.MemoryStore();
-  const keycloak = new Keycloak({store: memoryStore})
+    // const memoryStore = new session.MemoryStore();
+    // const keycloak = new Keycloak({store: memoryStore})
 
-  app.use("http://localhost:4000/graphql", keycloak.middleware())
+    // app.use("/graphql", keycloak.middleware())
+
+  // const {keycloak} =
+  createKeyCloak(app, graphqlPath)
+
+
 
   const apolloSever = new ApolloServer({
+    typeDefs: [KeycloakTypeDefs],
+    schemaDirectives: KeycloakSchemaDirectives,
     schema: await buildSchema({
       resolvers,
       validate: false,
       dateScalarMode: 'isoDate',
       container: Container,
+      // authChecker
     }),
-    typeDefs: [KeycloakTypeDefs],
-    schemaDirectives: KeycloakSchemaDirectives,
+    // schemaDirectives: {
+    //   hasRole: HasRoleDirective,
+    //   auth: AuthDirective
+    // },
     context: ({ res, req }) => ({
       req,
       res,
